@@ -1,1 +1,16 @@
-
+SELECT
+    rs.*
+FROM
+    (
+    SELECT
+        *,
+        Rank() over(
+        PARTITION BY products.category_id
+    ORDER BY
+        products.id
+    DESC
+    ) AS Rank
+FROM
+    products) rs
+    WHERE
+        Rank <= 2
