@@ -16,4 +16,11 @@ public interface ApiInterface {
             @Query("item_type") String item_type,
             @Query("key") String keyword
     );
+
+
+    @GET("getproducts.php")
+    Call<List<Product>> getProducts();
+
+    @GET("getproducts2.php")
+    Call<List<Product>> getProducts2( @Query("key") String keyword);
 }

@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private List<Contact> contacts;
+    private List<Contact> contacts=new ArrayList<>();
     private Adapter adapter;
-    private ApiInterface apiInterface;
+//    private ApiInterface apiInterface;
     ProgressBar progressBar;
     TextView search;
     String[] item;
@@ -42,23 +43,25 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+
+        adapter = new Adapter(contacts, MainActivity.this);
+        recyclerView.setAdapter(adapter);
+
         fetchContact("users", "");
 
     }
 
     public void fetchContact(String type, String key){
 
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+//        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<List<Contact>> call = apiInterface.getContact(type, key);
+        Call<List<Contact>> call =ApiClient.getInstance().getApiInterface().getContact(type, key);
         call.enqueue(new Callback<List<Contact>>() {
             @Override
             public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                 progressBar.setVisibility(View.GONE);
                 contacts = response.body();
-                adapter = new Adapter(contacts, MainActivity.this);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                adapter.updateContact(contacts);
             }
 
             @Override

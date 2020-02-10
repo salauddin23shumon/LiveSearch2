@@ -47,4 +47,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             email = itemView.findViewById(R.id.email);
         }
     }
+
+    public void updateContact(List<Contact> contacts){
+        this.contacts=contacts;
+        notifyDataSetChanged();
+    }
 }
